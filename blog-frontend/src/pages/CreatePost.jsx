@@ -5,13 +5,15 @@ import "./CreatePost.css";
 function CreatePost() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const published = true
 
     async function handleSubmit(event) {
         event.preventDefault();
 
         const post = {
             title,
-            content
+            content,
+            published
         };
 
         try {

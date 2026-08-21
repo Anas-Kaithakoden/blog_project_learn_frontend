@@ -1,5 +1,33 @@
 const API_URL = "http://localhost:8000";
 
+export async function login(email, password) {
+    const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email,
+            password
+        })
+    });
+
+    if (!response.ok) {
+        throw new Error("Login failed");
+    }
+
+    return await response.json();
+}
+
+function getAuthHeaders() {
+    const token = localStorage.getItem("access_token");
+
+    return {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    };
+}
+
 export async function getPosts() {
     const response = await fetch(`${API_URL}/posts`);
 
@@ -13,9 +41,7 @@ export async function getPosts() {
 export async function createPost(post) {
     const response = await fetch(`${API_URL}/posts`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(post)
     });
 

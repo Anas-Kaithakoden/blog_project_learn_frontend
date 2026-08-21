@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createPost } from "../services/api";
 import "./CreatePost.css";
 
-function CreatePost() {
+function CreatePost({ onPostCreated }) {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const published = true
@@ -17,12 +17,13 @@ function CreatePost() {
         };
 
         try {
-            const data = await createPost(post);
-            console.log(data);
+            await createPost(post);
+            onPostCreated();
         } catch (error) {
             console.error(error);
         }
     }
+    
 
     return (
         <form className="create-post-form" onSubmit={handleSubmit}>

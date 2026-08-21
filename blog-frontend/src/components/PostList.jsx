@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getPosts } from "../services/api";
 import PostCard from "./PostCard";
 
-function PostList() {
+function PostList({ refreshPosts }) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -20,8 +20,8 @@ function PostList() {
         }
 
         loadPosts();
-    }, []);
-
+    }, [refreshPosts]);
+    
     if (loading) {
         return <p>Loading...</p>;
     }

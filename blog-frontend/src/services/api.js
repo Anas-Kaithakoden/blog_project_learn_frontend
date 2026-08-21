@@ -22,6 +22,10 @@ export async function login(email, password) {
 function getAuthHeaders() {
     const token = localStorage.getItem("access_token");
 
+    if (!token) {
+        throw new Error("Not authenticated");
+    }
+
     return {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
@@ -50,4 +54,21 @@ export async function createPost(post) {
     }
 
     return await response.json();
+}
+
+export async function deletePost(post_id) {
+    const response = await fetch(`${API_URL}/posts/${post_id}`, {
+        method: "DELETE",
+        headers: getAuthHeaders()
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+
+        console.error("Delete error:", errorData);
+
+        throw new Error("Failed to delete post");
+    }
+
+    return true;
 }

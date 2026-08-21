@@ -6,17 +6,25 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     async function handleSubmit(event) {
         event.preventDefault();
 
+        setLoading(true);
+        setError("");
+
         try {
             const data = await login(email, password);
 
-            localStorage.setItem( "access_token", data.access_token );
-
+            localStorage.setItem(
+                "access_token",
+                data.access_token
+            );
         } catch (error) {
             setError(error.message);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -46,8 +54,8 @@ function Login() {
                     </p>
                 )}
 
-                <button type="submit">
-                    Login
+                <button type="submit" disabled={loading}>
+                    {loading ? "Logging in..." : "Login"}
                 </button>
 
             </form>

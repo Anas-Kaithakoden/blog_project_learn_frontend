@@ -1,4 +1,27 @@
-const API_URL = "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL;
+
+async function handleResponse(response) {
+    if (response.status === 401) {
+        localStorage.removeItem("access_token");
+
+        throw new Error("Session expired");
+    }
+
+    if (!response.ok) {
+        const errorData = await response.json();
+
+        throw new Error(
+            errorData.detail || "Request failed"
+        );
+    }
+
+    // 204 No Content
+    if (response.status === 204) {
+        return true;
+    }
+
+    return response.json();
+}
 
 export async function login(email, password) {
     const response = await fetch(`${API_URL}/login`, {
@@ -12,11 +35,7 @@ export async function login(email, password) {
         })
     });
 
-    if (!response.ok) {
-        throw new Error("Login failed");
-    }
-
-    return await response.json();
+    return handleResponse(response);
 }
 
 function getAuthHeaders() {
@@ -35,11 +54,7 @@ function getAuthHeaders() {
 export async function getPosts() {
     const response = await fetch(`${API_URL}/posts`);
 
-    if (!response.ok) {
-        throw new Error("Failed to fetch posts");
-    }
-
-    return await response.json();
+    return handleResponse(response);
 }
 
 export async function createPost(post) {
@@ -49,11 +64,7 @@ export async function createPost(post) {
         body: JSON.stringify(post)
     });
 
-    if (!response.ok) {
-        throw new Error("Failed to create post");
-    }
-
-    return await response.json();
+    return handleResponse(response);
 }
 
 export async function deletePost(post_id) {
@@ -62,13 +73,5 @@ export async function deletePost(post_id) {
         headers: getAuthHeaders()
     });
 
-    if (!response.ok) {
-        const errorData = await response.json();
-
-        console.error("Delete error:", errorData);
-
-        throw new Error("Failed to delete post");
-    }
-
-    return true;
+    return handleResponse(response);
 }

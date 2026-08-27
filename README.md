@@ -17,3 +17,30 @@ src/
 │
 ├── App.jsx
 └── main.jsx
+
+
+
+                     App
+                      │
+             isAuthenticated
+                /          \
+              true         false
+               │             │
+               ▼             ▼
+          Blog UI           Login
+               │
+       ┌───────┼────────┐
+       ▼       ▼        ▼
+     GET      POST     DELETE
+       │       │        │
+       └───────┼────────┘
+               ▼
+          services/api.js
+               │
+        ┌──────┴───────┐
+        ▼              ▼
+     JWT/Auth       HTTP/JSON
+        │              │
+        └──────┬───────┘
+               ▼
+             FastAPI

@@ -1,7 +1,20 @@
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-function Navbar({ isAuthenticated, onLogout }) {
+function Navbar() {
+    const {
+        isAuthenticated,
+        logoutUser
+    } = useAuth()
+
+    const navigate = useNavigate();
+    
+    function handleLogout() {
+        logoutUser();
+        navigate("/login");
+    }
+    
     return (
         <nav className="navbar">
             <h2 className="navbar-logo">My Blog</h2>
@@ -12,7 +25,7 @@ function Navbar({ isAuthenticated, onLogout }) {
                     <>
                         <Link to="/create-post">Create Post</Link>
                         <Link to="/delete-post">Delete Post</Link>
-                        <button onClick={onLogout}>
+                        <button onClick={handleLogout}>
                             Logout
                         </button>
                     </>

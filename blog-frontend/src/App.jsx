@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import Navbar from "./components/Navbar";
@@ -12,30 +11,14 @@ import Login from "./pages/Login";
 
 function App() {
     const [refreshPosts, setRefreshPosts] = useState(0);
-    const navigate = useNavigate();
-
-    const [isAuthenticated, setIsAuthenticated] = useState(() => {
-        return Boolean(
-            localStorage.getItem("access_token")
-        );
-    });
-
+    
     function handlePostChanged() {
         setRefreshPosts(prev => prev + 1);
     }
 
-    function handleLogout() {
-        localStorage.removeItem("access_token");
-        setIsAuthenticated(false);
-        navigate("/login");
-    }
-
     return (
         <>
-            <Navbar
-                isAuthenticated={isAuthenticated}
-                onLogout={handleLogout}
-            />
+            <Navbar />
 
             <Routes>
 
@@ -52,21 +35,13 @@ function App() {
 
                 <Route
                     path="/login"
-                    element={
-                        <Login
-                            onLogin={() =>
-                                setIsAuthenticated(true)
-                            }
-                        />
-                    }
+                    element={<Login />}
                 />
 
                 <Route
                     path="/create-post"
                     element={
-                        <ProtectedRoute
-                            isAuthenticated={isAuthenticated}
-                        >
+                        <ProtectedRoute>
                             <CreatePost
                                 onPostCreated={handlePostChanged}
                             />
@@ -77,9 +52,7 @@ function App() {
                 <Route
                     path="/delete-post"
                     element={
-                        <ProtectedRoute
-                            isAuthenticated={isAuthenticated}
-                        >
+                        <ProtectedRoute>
                             <DeletePost
                                 onPostDeleted={handlePostChanged}
                             />

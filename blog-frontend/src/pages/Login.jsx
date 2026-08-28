@@ -2,14 +2,20 @@ import { useState } from "react";
 import { login } from "../services/api";
 import "./Login.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-function Login({ onLogin}) {
+function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const {
+        loginUser
+    } = useAuth()
+
     const navigate = useNavigate();
+
     async function handleSubmit(event) {
         event.preventDefault();
 
@@ -19,12 +25,7 @@ function Login({ onLogin}) {
         try {
             const data = await login(email, password);
 
-            localStorage.setItem(
-                "access_token",
-                data.access_token
-            );
-
-            onLogin();
+            loginUser(data.access_token);
             navigate("/");
         } catch (error) {
             setError(error.message);

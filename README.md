@@ -15,6 +15,8 @@ src/
 ├── services/
 │   └── api.js
 │
+├── context/
+│   └── AuthContext.jsx
 ├── App.jsx
 └── main.jsx
 
@@ -44,3 +46,47 @@ src/
         └──────┬───────┘
                ▼
              FastAPI
+
+
+
+                         Browser
+                            │
+                          URL
+                            │
+                            ▼
+                     React Router
+                            │
+              ┌─────────────┴─────────────┐
+              │                           │
+           /login                    Protected
+              │                       Routes
+              ▼                           │
+           Login                  ┌───────┼───────┐
+                                  ▼       ▼       ▼
+                                Posts   Create   Delete
+                                  │       │       │
+                                  └───────┼───────┘
+                                          ▼
+                                    services/api.js
+                                          │
+                                          ▼
+                                       FastAPI
+
+
+
+┌─────────────────┐
+│ React / Vite    │
+│ localhost:5173  │
+└────────┬────────┘
+         │
+         │ HTTP
+         ▼
+┌─────────────────┐
+│ FastAPI         │
+│ localhost:8000  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ PostgreSQL      │
+└─────────────────┘

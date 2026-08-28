@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { login } from "../services/api";
 import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
 function Login({ onLogin}) {
     const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ function Login({ onLogin}) {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const navigate = useNavigate();
     async function handleSubmit(event) {
         event.preventDefault();
 
@@ -23,6 +25,7 @@ function Login({ onLogin}) {
             );
 
             onLogin();
+            navigate("/");
         } catch (error) {
             setError(error.message);
         } finally {

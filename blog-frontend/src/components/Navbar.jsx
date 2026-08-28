@@ -1,4 +1,5 @@
 import "./Navbar.css";
+import { Link } from "react-router-dom";
 
 function Navbar({ isAuthenticated, onLogout }) {
     return (
@@ -6,12 +7,11 @@ function Navbar({ isAuthenticated, onLogout }) {
             <h2 className="navbar-logo">My Blog</h2>
 
             <div className="navbar-links">
-                <a href="/">Posts</a>
-
+                <Link to="/">Posts</Link>
                 {isAuthenticated && (
                     <>
-                        <a href="/create-post">Create Post</a>
-
+                        <Link to="/create-post">Create Post</Link>
+                        <Link to="/delete-post">Delete Post</Link>
                         <button onClick={onLogout}>
                             Logout
                         </button>
@@ -19,7 +19,7 @@ function Navbar({ isAuthenticated, onLogout }) {
                 )}
 
                 {!isAuthenticated && (
-                    <a href="/login">Login</a>
+                    <Link to="/login">Login</Link>
                 )}
             </div>
         </nav>
